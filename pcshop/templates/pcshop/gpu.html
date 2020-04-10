@@ -1,0 +1,9 @@
+{% if gpu_list %}
+    <ul>
+    {% for gpu in gpu_list %}
+        <li><a href="{{ gpu.id }}/">{{ gpu.Name  }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No gpu are available.</p>
+{% endif %}

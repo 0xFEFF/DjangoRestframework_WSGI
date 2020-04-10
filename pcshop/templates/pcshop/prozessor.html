@@ -1,0 +1,9 @@
+{% if proz_list %}
+    <ul>
+    {% for proz in proz_list %}
+        <li><a href="{{ proz.id }}/">{{proz.Modell }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No processor are available.</p>
+{% endif %}

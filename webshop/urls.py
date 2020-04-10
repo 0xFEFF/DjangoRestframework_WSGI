@@ -16,7 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+#REST 
+from rest_framework import routers
+from pcshop import views
+
+router = routers.DefaultRouter()
+router.register(r'prozessor', views.ProzessorViewSet)
+router.register(r'gpu', views.GPUViewSet)
+router.register(r'ram', views.RAMViewSet)
+router.register(r'ssd', views.SSDViewSet)
+router.register(r'mainboard', views.MainboardViewSet)
+
 urlpatterns = [
+    path('', include(router.urls)),
     path('pcshop/', include('pcshop.urls')),
     path('admin/', admin.site.urls),
 ]

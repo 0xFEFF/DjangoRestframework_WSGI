@@ -1,15 +1,14 @@
 from django.http import HttpResponse
-#import loader to use with template
-from django.template import loader
-
 #import render shortcut in django
 from django.shortcuts import get_object_or_404, render
 
-#import Http Error 404
-from django.http import Http404
+#REST modules
+from rest_framework import viewsets, permissions
+from .serializers import ProzessorSerializer, GPUSerializer, RAMSerializer, SSDSerializer, MainboardSerializer
 
-from .models import Prozessor, GPU
+from .models import Prozessor, GPU, SSD, RAM, Mainboard
 
+#normal views
 def index(request):
     return HttpResponse("Welcome to the PC shop site.")
 
@@ -34,3 +33,35 @@ def RAMView(request):
 
 def SSDView(request):
     return HttpResponse("SSD")
+
+#REST views
+class ProzessorViewSet(viewsets.ModelViewSet):
+    #API endpoint
+    queryset = Prozessor.objects.all()
+    serializer_class = ProzessorSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class GPUViewSet(viewsets.ModelViewSet):
+    #API endpoint
+    queryset = GPU.objects.all()
+    serializer_class = GPUSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class SSDViewSet(viewsets.ModelViewSet):
+    #API endpoint
+    queryset = SSD.objects.all()
+    serializer_class = SSDSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class RAMViewSet(viewsets.ModelViewSet):
+    #API endpoint
+    queryset = RAM.objects.all()
+    serializer_class = RAMSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class MainboardViewSet(viewsets.ModelViewSet):
+    #API endpoint
+    queryset = Mainboard.objects.all()
+    serializer_class = MainboardSerializer
+    permission_classes = [permissions.IsAuthenticated]
+

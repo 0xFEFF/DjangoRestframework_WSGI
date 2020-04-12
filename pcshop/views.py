@@ -1,29 +1,37 @@
 from django.http import HttpResponse
-#import render shortcut in django
-from django.shortcuts import get_object_or_404, render
 
-#REST modules
-from rest_framework import viewsets, permissions
 from .serializers import ProzessorSerializer, GPUSerializer, RAMSerializer, SSDSerializer, MainboardSerializer
-
 from .models import Prozessor, GPU, SSD, RAM, Mainboard
+
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework import status, viewsets, permissions
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+
 
 #normal views
 def index(request):
     return HttpResponse("Welcome to the PC shop site.")
 
-def ProzessorView(request):
-    proz_list = Prozessor.objects.all()
-    context = {'proz_list': proz_list}
-    return render(request, 'pcshop/prozessor.html', context)
+@api_view(['GET', 'POST'])
+def ProzessorView(request, format=None):
+    #display all processor or create a new one
+    if request.method == 'GET':
+        prozessor = Prozessor.objects.all()
+        serializer = ProzessorSerializer(prozessor, many = True)
+        return Response(serializer.data)
 
+    elif request.method == 'POST':
+        serializer = ProzessorSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+"""
 def GPUView(request):
-    try:
-        gpu_list = GPU.objects.all()
-        context = {'gpu_list': gpu_list}
-    except GPU.DoesNotExist:
-        raise Http404("No GPU")
-    return render(request, 'pcshop/gpu.html', context)
+    
 
 def MainboardView(request):
     return HttpResponse("Mainboard")
@@ -33,6 +41,7 @@ def RAMView(request):
 
 def SSDView(request):
     return HttpResponse("SSD")
+"""
 
 #REST views
 class ProzessorViewSet(viewsets.ModelViewSet):

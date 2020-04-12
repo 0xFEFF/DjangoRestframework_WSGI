@@ -29,6 +29,6 @@ router.register(r'mainboard', views.MainboardViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('pcshop/', include('pcshop.urls')),
+    path('api/', include('pcshop.urls')),
     path('admin/', admin.site.urls),
 ]
